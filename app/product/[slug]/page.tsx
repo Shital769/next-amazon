@@ -1,6 +1,7 @@
 import data from "@/lib/data"
 import Link from "next/link"
 import Image from "next/image"
+import AddToCart from "@/components/products/AddToCart"
 
 // defining params which has an object params that comprises of slug that has type of string.
 export default function page({ params }: {
@@ -61,9 +62,11 @@ export default function page({ params }: {
                         {product.countInStock > 0 ? "In Stock" : "Out of Stock"}
                      </div>
                   </div>
-                  <div className="card-actions justify-center">
-                     <button className="btn btn-primary w-full" type="button" >Add to cart</button>
-                  </div>
+                  {product.countInStock !== 0 && (
+                     <div className="card-actions justify-center">
+                        <AddToCart item={{ ...product, qty: 0, color: "", size: "" }} />
+                     </div>
+                  )}
                </div>
             </div>
          </div>
