@@ -7,9 +7,7 @@
 - User authentication and account management
 - Responsive design
 
-## Created Next Amazon App by using npx create-next-app@latest on Terminal.
-
-## Published to Github.
+## Created Next Amazon App by using npx create-next-app@latest on Terminal and Published to Github.
 
 ## List the Products:
 
@@ -55,3 +53,4 @@
 5.  Create AddToCart component
 6.  Create Menu component in header folder
 
+## Handle Remove Item form Cart

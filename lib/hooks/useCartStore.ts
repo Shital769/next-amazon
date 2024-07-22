@@ -8,9 +8,11 @@ type Cart = {
   taxPrice: number;
   shippingPrice: number;
   totalPrice: number;
+  increase: (item: OrderItem) => void;
+  decrease: (item: OrderItem) => void;
 };
 
-const initialState: Cart = {
+const initialState = {
   items: [],
   itemsPrice: 0,
   taxPrice: 0,
@@ -18,7 +20,7 @@ const initialState: Cart = {
   totalPrice: 0,
 };
 
-export const cartStore = create<Cart & { increase: (item: OrderItem) => void }>((set) => ({
+export const cartStore = create<Cart>((set) => ({
   ...initialState,
   increase: (item: OrderItem) => {
     set((state) => {
@@ -29,7 +31,33 @@ export const cartStore = create<Cart & { increase: (item: OrderItem) => void }>(
           )
         : [...state.items, { ...item, qty: 1 }];
 
-      const { itemsPrice, shippingPrice, taxPrice, totalPrice } = calcPrice(updatedCartItems);
+      const { itemsPrice, shippingPrice, taxPrice, totalPrice } =
+        calcPrice(updatedCartItems);
+
+      return {
+        items: updatedCartItems,
+        itemsPrice,
+        taxPrice,
+        shippingPrice,
+        totalPrice,
+      };
+    });
+  },
+
+  decrease: (item: OrderItem) => {
+    set((state) => {
+      const exist = state.items.find((x) => x.slug === item.slug);
+      if (!exist) return state;
+
+      const updatedCartItems =
+        exist.qty === 1
+          ? state.items.filter((x) => x.slug !== item.slug)
+          : state.items.map((x) =>
+              x.slug === item.slug ? { ...exist, qty: exist.qty - 1 } : x
+            );
+
+      const { itemsPrice, shippingPrice, taxPrice, totalPrice } =
+        calcPrice(updatedCartItems);
 
       return {
         items: updatedCartItems,
@@ -43,13 +71,22 @@ export const cartStore = create<Cart & { increase: (item: OrderItem) => void }>(
 }));
 
 export default function useCartService() {
-  const { items, itemsPrice, taxPrice, shippingPrice, totalPrice, increase } = cartStore((state) => ({
+  const {
+    items,
+    itemsPrice,
+    taxPrice,
+    shippingPrice,
+    totalPrice,
+    increase,
+    decrease,
+  } = cartStore((state) => ({
     items: state.items,
     itemsPrice: state.itemsPrice,
     taxPrice: state.taxPrice,
     shippingPrice: state.shippingPrice,
     totalPrice: state.totalPrice,
     increase: state.increase,
+    decrease: state.decrease,
   }));
   return {
     items,
@@ -58,6 +95,7 @@ export default function useCartService() {
     shippingPrice,
     totalPrice,
     increase,
+    decrease,
   };
 }
 
