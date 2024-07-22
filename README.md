@@ -51,6 +51,60 @@
 3.  npm install zustand
 4.  Create a Hook: lib/hooks/userCartStore.ts
 5.  Create AddToCart component
+
+    ## Add to Cart Function
+
+    ```ts
+     increase: (item: OrderItem) => {
+    set((state) => {
+      const exist = state.items.find((x) => x.slug === item.slug);
+      const updatedCartItems = exist
+        ? state.items.map((x) =>
+            x.slug === item.slug ? { ...exist, qty: exist.qty + 1 } : x
+          )
+        : [...state.items, { ...item, qty: 1 }];
+
+      const { itemsPrice, shippingPrice, taxPrice, totalPrice } =
+        calcPrice(updatedCartItems);
+
+      return {
+        items: updatedCartItems,
+        itemsPrice,
+        taxPrice,
+        shippingPrice,
+        totalPrice,
+      };
+    });
+    },
+    ```
+
 6.  Create Menu component in header folder
 
 ## Handle Remove Item form Cart
+
+```ts
+decrease: (item: OrderItem) => {
+    set((state) => {
+      const exist = state.items.find((x) => x.slug === item.slug);
+      if (!exist) return state;
+
+      const updatedCartItems =
+        exist.qty === 1
+          ? state.items.filter((x) => x.slug !== item.slug)
+          : state.items.map((x) =>
+              x.slug === item.slug ? { ...exist, qty: exist.qty - 1 } : x
+            );
+
+      const { itemsPrice, shippingPrice, taxPrice, totalPrice } =
+        calcPrice(updatedCartItems);
+
+      return {
+        items: updatedCartItems,
+        itemsPrice,
+        taxPrice,
+        shippingPrice,
+        totalPrice,
+      };
+    });
+  },
+```
