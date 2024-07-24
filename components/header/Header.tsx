@@ -10,11 +10,10 @@ const Header = () => {
             <Link href="/" className="btn btn-ghost text-lg">
                Next Amazon
             </Link>
-
             <Menu />
          </nav>
       </header>
    )
 }
 
-export default Header 
+export default Header;

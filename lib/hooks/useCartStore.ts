@@ -1,6 +1,7 @@
 import { create } from "zustand";
 import { round2 } from "../utils";
 import { OrderItem } from "../models/OrderModel";
+import { createJSONStorage, persist } from "zustand/middleware";
 
 type Cart = {
   items: OrderItem[];
@@ -20,55 +21,63 @@ const initialState = {
   totalPrice: 0,
 };
 
-export const cartStore = create<Cart>((set) => ({
-  ...initialState,
-  increase: (item: OrderItem) => {
-    set((state) => {
-      const exist = state.items.find((x) => x.slug === item.slug);
-      const updatedCartItems = exist
-        ? state.items.map((x) =>
-            x.slug === item.slug ? { ...exist, qty: exist.qty + 1 } : x
-          )
-        : [...state.items, { ...item, qty: 1 }];
+export const cartStore = create<Cart>()(
+  persist(
+    (set) => ({
+      ...initialState,
+      increase: (item: OrderItem) => {
+        set((state) => {
+          const exist = state.items.find((x) => x.slug === item.slug);
+          const updatedCartItems = exist
+            ? state.items.map((x) =>
+                x.slug === item.slug ? { ...exist, qty: exist.qty + 1 } : x
+              )
+            : [...state.items, { ...item, qty: 1 }];
 
-      const { itemsPrice, shippingPrice, taxPrice, totalPrice } =
-        calcPrice(updatedCartItems);
+          const { itemsPrice, shippingPrice, taxPrice, totalPrice } =
+            calcPrice(updatedCartItems);
 
-      return {
-        items: updatedCartItems,
-        itemsPrice,
-        taxPrice,
-        shippingPrice,
-        totalPrice,
-      };
-    });
-  },
+          return {
+            items: updatedCartItems,
+            itemsPrice,
+            taxPrice,
+            shippingPrice,
+            totalPrice,
+          };
+        });
+      },
 
-  decrease: (item: OrderItem) => {
-    set((state) => {
-      const exist = state.items.find((x) => x.slug === item.slug);
-      if (!exist) return state;
+      decrease: (item: OrderItem) => {
+        set((state) => {
+          const exist = state.items.find((x) => x.slug === item.slug);
+          if (!exist) return state;
 
-      const updatedCartItems =
-        exist.qty === 1
-          ? state.items.filter((x) => x.slug !== item.slug)
-          : state.items.map((x) =>
-              x.slug === item.slug ? { ...exist, qty: exist.qty - 1 } : x
-            );
+          const updatedCartItems =
+            exist.qty === 1
+              ? state.items.filter((x) => x.slug !== item.slug)
+              : state.items.map((x) =>
+                  x.slug === item.slug ? { ...exist, qty: exist.qty - 1 } : x
+                );
 
-      const { itemsPrice, shippingPrice, taxPrice, totalPrice } =
-        calcPrice(updatedCartItems);
+          const { itemsPrice, shippingPrice, taxPrice, totalPrice } =
+            calcPrice(updatedCartItems);
 
-      return {
-        items: updatedCartItems,
-        itemsPrice,
-        taxPrice,
-        shippingPrice,
-        totalPrice,
-      };
-    });
-  },
-}));
+          return {
+            items: updatedCartItems,
+            itemsPrice,
+            taxPrice,
+            shippingPrice,
+            totalPrice,
+          };
+        });
+      },
+    }),
+    {
+      name: "cartStore", // Unique name for localStorage
+      storage: createJSONStorage(() => localStorage), // by default localStorage as the storage engine
+    }
+  )
+);
 
 export default function useCartService() {
   const {

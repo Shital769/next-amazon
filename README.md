@@ -108,3 +108,18 @@ decrease: (item: OrderItem) => {
     });
   },
 ```
+
+# Create Cart Page
+
+1. lin/useCartService.ts
+
+```ts
+import {persist} from "zustand/middleware"
+export const cartStore = create<Cart>()(
+ persist(()=> initialState, {
+   name:"cartStore
+ })
+)
+```
+
+2. app/(frontend)//cart/cartDetails.ts
