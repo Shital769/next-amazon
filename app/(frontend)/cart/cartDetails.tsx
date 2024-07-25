@@ -22,7 +22,7 @@ export default function CartDetails() {
       <>
          <h1 className="py-4 text-2xl" >Shopping Cart</h1>
          {items.length === 0 ? (
-            <div>Cart is empty.  <Link href="/" />Go Shopping </div>
+            <div>Cart is empty.  <Link href="/">Go Shopping</Link></div>
          ) : (
             <div className="grid md:grid-cols-4 md:gap-5">
                <div className="overflow-x-auto md:col-span-3">
@@ -55,6 +55,23 @@ export default function CartDetails() {
                         }
                      </tbody>
                   </table>
+               </div>
+
+               <div>
+                  <div className="card bg-base-300">
+                     <div className="card-body">
+                        <ul>
+                           <li>
+                              <div className="pb-3 text-xl">
+                                 Subtotal({items.reduce((a, c) => a + c.qty, 0)}): ${itemsPrice}
+                              </div>
+                           </li>
+                           <li>
+                              <button onClick={() => router.push("/shipping")} className="btn btn-primary w-full" >Proceed To Checkout</button>
+                           </li>
+                        </ul>
+                     </div>
+                  </div>
                </div>
             </div>
          )}
