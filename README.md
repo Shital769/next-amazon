@@ -126,3 +126,7 @@ export const cartStore = create<Cart>()(
 
 ## Setup MongoDB Database using MongoDB Atlas
 
+## Load Products form DB
+
+- lib/servrices/productServices.ts
+  -app(frontend)/pages.tsx

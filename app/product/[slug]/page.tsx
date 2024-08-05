@@ -1,15 +1,33 @@
 import data from "@/lib/data"
 import Link from "next/link"
 import Image from "next/image"
+import { convertDocToObj } from "@/lib/utils"
 import AddToCart from "@/components/products/AddToCart"
+import productService from "@/lib/services/productServices"
+
+export async function generateMetaData({
+   params
+}:{
+   params:{slug:string}
+}) {
+   const product = await productService.getBySlug(params.slug)
+   if(!product) {
+      return {title:"Product not found"}
+   }
+   return {
+      title:product.name,
+      description:product.description
+   }
+}
+
 
 // defining params which has an object params that comprises of slug that has type of string.
-export default function page({ params }: {
+export default async function ProductDetails({ params }: {  
    params: { slug: string }
 }) {
 
    // finding data
-   const product = data.products.find((x) => x.slug === params.slug)
+   const product = await productService.getBySlug(params.slug)
    if (!product) {
       return <div>Product Not Found</div>
    }
@@ -64,7 +82,7 @@ export default function page({ params }: {
                   </div>
                   {product.countInStock !== 0 && (
                      <div className="card-actions justify-center">
-                        <AddToCart item={{ ...product, qty: 0, color: "", size: "" }} />
+                        <AddToCart item={{ ...convertDocToObj(product), qty: 0, color: "", size: "" }} />
                      </div>
                   )}
                </div>
