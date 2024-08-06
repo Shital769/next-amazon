@@ -117,7 +117,7 @@ decrease: (item: OrderItem) => {
 import {persist} from "zustand/middleware"
 export const cartStore = create<Cart>()(
  persist(()=> initialState, {
-   name:"cartStore
+   name:"cartStore"
  })
 )
 ```
