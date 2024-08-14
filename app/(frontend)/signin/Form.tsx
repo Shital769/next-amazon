@@ -1,7 +1,7 @@
 "use client"
 import { signIn, useSession } from "next-auth/react"
 import { useSearchParams } from "next/navigation"
-import { useRouter } from "next/router"
+import { useRouter } from "next/navigation"
 import { useEffect } from "react"
 import { SubmitHandler, useForm } from "react-hook-form"
 
@@ -10,7 +10,7 @@ type Inputs = {
    password: string
 }
 
-const SignInForm = () => {
+const Form = () => {
    const { data: session } = useSession()
    const params = useSearchParams()
 
@@ -67,7 +67,7 @@ const SignInForm = () => {
                   <input type="text" id="email" {...register("email", {
                      required: "Email is required",
                      pattern: {
-                        value: /[a-z0-9] + @[a-z]+\.[a-z]{2,3}/,
+                        value: /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/,
                         message: "Email is required"
                      }
                   })} className="input input-bordered w-full max-w-sm" />
@@ -100,4 +100,4 @@ const SignInForm = () => {
 
 
 
-export default SignInForm
+export default Form

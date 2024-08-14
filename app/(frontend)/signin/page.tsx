@@ -1,10 +1,10 @@
 import { Metadata } from "next";
-import SignInForm from "./SignInForm";
+import Form from "./Form";
 
 export const metadata: Metadata = {
    title: "Sign in"
 }
 
 export default async function Signin() {
-   return <SignInForm />
+   return <Form />
 }
