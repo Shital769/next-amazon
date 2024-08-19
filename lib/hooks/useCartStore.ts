@@ -1,6 +1,7 @@
+import { ShippingAddress } from "./../models/OrderModel";
 import { create } from "zustand";
 import { round2 } from "../utils";
-import { OrderItem, ShippingAddress } from "../models/OrderModel";
+import { OrderItem } from "../models/OrderModel";
 import { persist } from "zustand/middleware";
 
 type Cart = {
@@ -35,8 +36,15 @@ export const cartStore = create<Cart>()(
 );
 
 export default function useCartService() {
-  const { items, itemsPrice, taxPrice, shippingPrice, totalPrice } =
-    cartStore();
+  const {
+    items,
+    itemsPrice,
+    taxPrice,
+    shippingPrice,
+    totalPrice,
+    paymentMethod,
+    shippingAddress,
+  } = cartStore();
 
   return {
     items,
@@ -44,6 +52,8 @@ export default function useCartService() {
     taxPrice,
     shippingPrice,
     totalPrice,
+    paymentMethod,
+    shippingAddress,
     increase: (item: OrderItem) => {
       const exist = items.find((x) => x.slug === item.slug);
       const updatedCartItems = exist
