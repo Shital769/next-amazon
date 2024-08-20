@@ -371,6 +371,46 @@ savePaymentMethod: (paymentMethod: string) => {
 ```
 
 3. components/CheckoutSteps.tsx
+
+```ts
+const CheckoutSteps = ({ current = 0 }) => {
+  return (
+    <ul className="steps steps-vertical lg:steps-horizontal w-full mt-4">
+      {["User Login", "Shipping Address", "Payment Method", "Place Order"].map(
+        (step, index) => (
+          <li
+            key={step}
+            className={`step ${index <= current ? "step-primary" : " "}`}
+          >
+            {step}
+          </li>
+        )
+      )}
+    </ul>
+  );
+};
+
+export default CheckoutSteps;
+```
+
+4. Create Shippping Form and Shipping Page
+
+- app/frontend/shipping/Form.tsx
+- app/frontend/shipping/pages.tsx
+
+```ts
+import { Metadata } from "next";
+import Form from "./Form";
+
+export const metadata: Metadata = {
+  title: "Shipping Address",
+};
+export default async function ShippingPage() {
+  return <Form />;
+}
+```
+
+5. app/frontend/payment/Form.tsx
 ```ts
 
 ```
