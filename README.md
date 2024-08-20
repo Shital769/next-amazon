@@ -396,7 +396,7 @@ export default CheckoutSteps;
 4. Create Shippping Form and Shipping Page
 
 - app/frontend/shipping/Form.tsx
-- app/frontend/shipping/pages.tsx
+- app/frontend/shipping/page.tsx
 
 ```ts
 import { Metadata } from "next";
@@ -411,6 +411,24 @@ export default async function ShippingPage() {
 ```
 
 5. app/frontend/payment/Form.tsx
+
+- app/frontend/payment/page.tsx
+
 ```ts
+import { Metadata } from "next";
+import Form from "./Form";
+
+export const metadata: Metadata = {
+   title: "Payment Method"
+}
+
+export default async function PaymentPage() {
+   return <Form />
+```
+# Place Order
+
+1. lib/models/OrderModel.ts
+```ts
+
 
 ```
