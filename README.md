@@ -425,11 +425,37 @@ export const metadata: Metadata = {
 export default async function PaymentPage() {
    return <Form />
 ```
+
 # Place Order
 
 1. lib/models/OrderModel.ts
 2. app/api/orders/route.ts
+
+3. npm install swr
+
+- SWR is a React Hooks library for data fetching.
+- With SWR, components will get a stream of data updates constantly and automatically. Thus, the UI will be always fast and reactive.
+
+4. components/ClientProviders.tsx
+
+- wrap the ClientProvider with <Swronfig>
+
 ```ts
-
-
+<SWRConfig
+  value={{
+    onError: (error, key) => {
+      toast.error(error.message);
+    },
+    fetcher: async (resource, init) => {
+      const res = await fetch(resource, init);
+      if (!res.ok) {
+        throw new Error("An error occured while fetching the data.");
+      }
+      return res.json();
+    },
+  }}
+>
+  <Toaster />
+  {children}
+</SWRConfig>
 ```
