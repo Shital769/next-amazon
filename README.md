@@ -428,6 +428,7 @@ export default async function PaymentPage() {
 # Place Order
 
 1. lib/models/OrderModel.ts
+2. app/api/orders/route.ts
 ```ts
 
 
