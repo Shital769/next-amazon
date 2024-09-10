@@ -470,10 +470,22 @@ import OrderModel from "@/lib/models/OrderModel";
 export const GET = auth(async (...request: any) => {
   const [req, { params }] = request;
   if (!req.auth) {
-    return Response.json({ message: "unautorized" }, { status: 401 });
+    return Response.json({ message: "unauthorized" }, { status: 401 });
   }
   await dbConnect();
   const order = await OrderModel.findById(params.id);
   return Response.json(order);
 });
 ```
+
+# Pay Order By PayPal
+1. Get paypal client id and app secret
+2. .env 
+```env
+
+PAYPAL_API_URL=https://api-m.sandbox.paypal.com
+PAYPAL_CLIENT_ID=your client id
+PAYPAL_APP_SECRET=your app secret
+```
+
+3. lib/paypal.ts
