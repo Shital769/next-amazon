@@ -479,8 +479,10 @@ export const GET = auth(async (...request: any) => {
 ```
 
 # Pay Order By PayPal
+
 1. Get paypal client id and app secret
-2. .env 
+2. .env
+
 ```env
 
 PAYPAL_API_URL=https://api-m.sandbox.paypal.com
@@ -489,3 +491,20 @@ PAYPAL_APP_SECRET=your app secret
 ```
 
 3. lib/paypal.ts
+
+```ts
+async function handleResponse(response: any) {
+  if (response.staus === 200 || response.status === 201) {
+    return response.json();
+  }
+
+  const errorMessage = await response.text();
+  throw new Error(errorMessage);
+}
+```
+
+4. app/api/orders/[id]/create-paypal-order/route.ts
+
+```ts
+// generating api
+```
