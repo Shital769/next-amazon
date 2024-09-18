@@ -19,7 +19,7 @@ export const POST = auth(async (...request: any) => {
       order.paidAt = Date.now();
       order.paymentResult = {
         id: captureData.id,
-        update_time: captureData.update_time,
+        status: captureData.status,
         email_address: captureData.payer.email_address,
       };
 

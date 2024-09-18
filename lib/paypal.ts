@@ -13,7 +13,7 @@ export const paypal = {
 
       body: JSON.stringify({
         intent: "CAPTURE",
-        puechase_units: [
+        purchase_units: [
           {
             amount: {
               currency_code: "USD",
@@ -49,6 +49,7 @@ async function generateAccessToken() {
     method: "post",
     body: "grant_type=client_credentials",
     headers: {
+      "Content-Type": "application/json",
       Authorization: `Basic ${auth}`,
     },
   });
@@ -58,7 +59,7 @@ async function generateAccessToken() {
 }
 
 async function handleResponse(response: any) {
-  if (response.staus === 200 || response.status === 201) {
+  if (response.status === 200 || response.status === 201) {
     return response.json();
   }
 

@@ -508,3 +508,7 @@ async function handleResponse(response: any) {
 ```ts
 // generating api
 ```
+
+5. app/api/orders/[id]/capture-paypal-order/route.ts
+
+6. app/(frontend)/order/[id]/OrderDetails.tsx
